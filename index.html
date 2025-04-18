@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tiyatro Yazarı Tahmin Oyunu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    #game {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    #title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    input[type="text"] {
+      width: calc(100% - 1rem);
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 0.5rem;
+    }
+    #checkBtn { background: #28a745; color: #fff; }
+    #nextBtn { background: #007bff; color: #fff; display: none; }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <h2>Tiyatro Yazarı Tahmin Oyunu</h2>
+    <div id="title">...</div>
+    <input type="text" id="guess" placeholder="Yazarın ismini yazın" autocomplete="off" />
+    <div>
+      <button id="checkBtn">Tahmin Et</button>
+      <button id="nextBtn">Sonraki</button>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const plays = [
+      { title: "Hamlet", author: "William Shakespeare" },
+      { title: "Kral Lear", author: "William Shakespeare" },
+      { title: "Antigone", author: "Sofokles" },
+      { title: "Bir Bebek Evi", author: "Henrik Ibsen" },
+      { title: "Godot'yu Beklerken", author: "Samuel Beckett" }
+    ];
+
+    let current;
+
+    function pickRandom() {
+      const idx = Math.floor(Math.random() * plays.length);
+      current = plays[idx];
+      document.getElementById("title").textContent = current.title;
+      document.getElementById("guess").value = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("checkBtn").style.display = "inline-block";
+    }
+
+    document.getElementById("checkBtn").addEventListener("click", () => {
+      const input = document.getElementById("guess").value.trim().toLowerCase();
+      const correct = current.author.toLowerCase();
+      const resultEl = document.getElementById("result");
+
+      if (!input) {
+        resultEl.textContent = "Lütfen bir tahmin girin.";
+        return;
+      }
+
+      if (input === correct) {
+        resultEl.textContent = "🎉 Doğru! Yazar: " + current.author;
+      } else {
+        resultEl.textContent = "❌ Yanlış. Doğru cevap: " + current.author;
+      }
+
+      document.getElementById("checkBtn").style.display = "none";
+      document.getElementById("nextBtn").style.display = "inline-block";
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", pickRandom);
+
+    // Başlangıçta oyun başlasın
+    pickRandom();
+  </script>
+</body>
+</html>
