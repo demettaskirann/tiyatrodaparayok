@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tiyatro Yazarı Tahmin Oyunu</title>
+  <title>Ben hangi oyun yazarının eseriyim?</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -13,7 +13,7 @@
       align-items: center;
       padding: 2rem;
     }
-    #game {
+    #game, #final {
       background: #fff;
       padding: 2rem;
       border-radius: 8px;
@@ -24,7 +24,12 @@
     }
     #title {
       font-size: 1.5rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    #progress, #timer {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #555;
     }
     input[type="text"] {
       width: calc(100% - 1rem);
@@ -49,8 +54,11 @@
   </style>
 </head>
 <body>
+
   <div id="game">
-    <h2>Tiyatro Yazarı Tahmin Oyunu</h2>
+    <h2>Ben hangi oyun yazarının eseriyim?</h2>
+    <div id="progress">Soru 1/20</div>
+    <div id="timer">Kalan Süre: 10s</div>
     <div id="title">...</div>
     <input type="text" id="guess" placeholder="Yazarın ismini yazın" autocomplete="off" />
     <div>
@@ -58,6 +66,12 @@
       <button id="nextBtn">Sonraki</button>
     </div>
     <div id="result"></div>
+  </div>
+
+  <div id="final" style="display:none;">
+    <h2>Oyun Bitti!</h2>
+    <div id="score"></div>
+    <div id="message" style="margin-top:1rem; font-size:1.1rem;"></div>
   </div>
 
   <script>
@@ -164,35 +178,103 @@
       { title: "Anne Frank’in Hatıra Defteri", author: "Frances Goodrich & Albert Hackett" }
     ];
 
-    let current;
-    function pickRandom() {
-      current = plays[Math.floor(Math.random() * plays.length)];
-      document.getElementById("title").textContent = current.title;
-      document.getElementById("guess").value = "";
-      document.getElementById("result").textContent = "";
-      document.getElementById("nextBtn").style.display = "none";
-      document.getElementById("checkBtn").style.display = "inline-block";
+    const totalQuestions = 20;
+    let currentQuestion = 1;
+    let correctCount = 0;
+    let timerInterval;
+
+    const progressEl = document.getElementById("progress");
+    const timerEl    = document.getElementById("timer");
+    const titleEl    = document.getElementById("title");
+    const guessEl    = document.getElementById("guess");
+    const resultEl   = document.getElementById("result");
+    const checkBtn   = document.getElementById("checkBtn");
+    const nextBtn    = document.getElementById("nextBtn");
+
+    const gameEl     = document.getElementById("game");
+    const finalEl    = document.getElementById("final");
+    const scoreEl    = document.getElementById("score");
+    const messageEl  = document.getElementById("message");
+
+    let currentPlay;
+
+    function startTimer() {
+      let timeLeft = 10;
+      timerEl.textContent = `Kalan Süre: ${timeLeft}s`;
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = `Kalan Süre: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          handleAnswer(false, "Süre doldu");
+        }
+      }, 1000);
     }
 
-    document.getElementById("checkBtn").addEventListener("click", () => {
-      const input = document.getElementById("guess").value.trim().toLowerCase();
-      const correct = current.author.toLowerCase();
-      const resultEl = document.getElementById("result");
+    function pickRandom() {
+      progressEl.textContent = `Soru ${currentQuestion}/${totalQuestions}`;
+      resultEl.textContent = "";
+      guessEl.value = "";
+      checkBtn.style.display = "inline-block";
+      nextBtn.style.display  = "none";
 
+      currentPlay = plays[Math.floor(Math.random() * plays.length)];
+      titleEl.textContent = currentPlay.title;
+      startTimer();
+    }
+
+    function handleAnswer(isCorrect, overrideMsg) {
+      clearInterval(timerInterval);
+      checkBtn.style.display = "none";
+      nextBtn.style.display  = "inline-block";
+
+      if (isCorrect) {
+        correctCount++;
+        resultEl.textContent = "🎉 Doğru! +10 puan";
+      } else {
+        const msg = overrideMsg || `Yanlış. Doğru cevap: ${currentPlay.author}`;
+        resultEl.textContent = `❌ ${msg}`;
+      }
+      currentQuestion++;
+    }
+
+    checkBtn.addEventListener("click", () => {
+      const input = guessEl.value.trim().toLowerCase();
       if (!input) {
         resultEl.textContent = "Lütfen bir tahmin girin.";
         return;
       }
-      if (input === correct) {
-        resultEl.textContent = "🎉 Doğru! Yazar: " + current.author;
-      } else {
-        resultEl.textContent = "❌ Yanlış. Doğru cevap: " + current.author;
-      }
-      document.getElementById("checkBtn").style.display = "none";
-      document.getElementById("nextBtn").style.display = "inline-block";
+      const correct = currentPlay.author.toLowerCase();
+      handleAnswer(input === correct);
     });
 
-    document.getElementById("nextBtn").addEventListener("click", pickRandom);
+    nextBtn.addEventListener("click", () => {
+      if (currentQuestion <= totalQuestions) {
+        pickRandom();
+      } else {
+        showFinal();
+      }
+    });
+
+    function showFinal() {
+      gameEl.style.display  = "none";
+      finalEl.style.display = "block";
+      const totalScore = correctCount * 10;
+      scoreEl.textContent = `Toplam Puan: ${totalScore} (${correctCount} doğru)`;
+
+      let msg;
+      if (correctCount >= 15) {
+        msg = "Usta tiyatro insanısınız.";
+      } else if (correctCount >= 10) {
+        msg = "Bir kaç tane daha oyun okusan, olacaksın...";
+      } else if (correctCount >= 5) {
+        msg = "Eh.... hiç yoktan iyidir...";
+      } else {
+        msg = "Senden bir cacık olmaz... Tiyatroya git, azıcık oyun izle.";
+      }
+      messageEl.textContent = msg;
+    }
 
     // Oyunu başlat
     pickRandom();
