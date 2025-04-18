@@ -1,105 +1,203 @@
-<script>
-  const plays = [
-    { title: "Hamlet", author: "William Shakespeare" },
-    { title: "Kral Lear", author: "William Shakespeare" },
-    { title: "Macbeth", author: "William Shakespeare" },
-    { title: "Romeo ve Juliet", author: "William Shakespeare" },
-    { title: "Bir Yaz Gecesi Rüyası", author: "William Shakespeare" },
-    { title: "Fırtına", author: "William Shakespeare" },
-    { title: "Othello", author: "William Shakespeare" },
-    { title: "Antonius ve Kleopatra", author: "William Shakespeare" },
-    { title: "Jül Sezar", author: "William Shakespeare" },
-    { title: "Titus Andronikus", author: "William Shakespeare" },
-    { title: "Antigone", author: "Sofokles" },
-    { title: "Oidipus Rex", author: "Sofokles" },
-    { title: "Oidipus Kolonistleri", author: "Sofokles" },
-    { title: "Filoktetes", author: "Sofokles" },
-    { title: "Trakhinliler", author: "Sofokles" },
-    { title: "Medea", author: "Euripides" },
-    { title: "İfigenya Aulis’te", author: "Euripides" },
-    { title: "Bakhalar", author: "Euripides" },
-    { title: "Helena", author: "Euripides" },
-    { title: "Agamemnon", author: "Aiskhylos" },
-    { title: "Prometheus Bağlı", author: "Aiskhylos" },
-    { title: "Eumenideler", author: "Aiskhylos" },
-    { title: "Kuşlar", author: "Aristophanes" },
-    { title: "Kurbağalar", author: "Aristophanes" },
-    { title: "Bulutlar", author: "Aristophanes" },
-    { title: "Cimri", author: "Molière" },
-    { title: "Hastalık Hastası", author: "Molière" },
-    { title: "Tartuffe", author: "Molière" },
-    { title: "Ciddiyetin Önemi", author: "Oscar Wilde" },
-    { title: "Vanya Dayı", author: "Anton Çehov" },
-    { title: "Vişne Bahçesi", author: "Anton Çehov" },
-    { title: "Martı", author: "Anton Çehov" },
-    { title: "Üç Kız Kardeş", author: "Anton Çehov" },
-    { title: "Bir Bebek Evi", author: "Henrik Ibsen" },
-    { title: "Hedda Gabler", author: "Henrik Ibsen" },
-    { title: "Peer Gynt", author: "Henrik Ibsen" },
-    { title: "Baba", author: "August Strindberg" },
-    { title: "Lady Ivona", author: "August Strindberg" },
-    { title: "Kafkas Tebeşir Dairesi", author: "Bertolt Brecht" },
-    { title: "Üç Kuruşluk Opera", author: "Bertolt Brecht" },
-    { title: "Galileo", author: "Bertolt Brecht" },
-    { title: "Godot’u Beklerken", author: "Samuel Beckett" },
-    { title: "Oyun", author: "Samuel Beckett" },
-    { title: "Krapp’ın Son Bandı", author: "Samuel Beckett" },
-    { title: "Kirli Eller", author: "Jean-Paul Sartre" },
-    { title: "Duvar", author: "Jean-Paul Sartre" },
-    { title: "Adalet Yolcuları", author: "Albert Camus" },
-    { title: "Caligula", author: "Albert Camus" },
-    { title: "Ziyaret", author: "Friedrich Dürrenmatt" },
-    { title: "Fizikçiler", author: "Friedrich Dürrenmatt" },
-    { title: "Satıcının Ölümü", author: "Arthur Miller" },
-    { title: "Cadı Kazanı", author: "Arthur Miller" },
-    { title: "Arzu Tramvayı", author: "Tennessee Williams" },
-    { title: "Cam Kenarı Kadınları", author: "Tennessee Williams" },
-    { title: "Güneşte Bir Üzüm", author: "Lorraine Hansberry" },
-    { title: "Döngü", author: "Arthur Schnitzler" },
-    { title: "Cyrano de Bergerac", author: "Edmond Rostand" },
-    { title: "Şarkıcı Horoz", author: "Edmond Rostand" },
-    { title: "Kanlı Düğün", author: "Federico García Lorca" },
-    { title: "Bernarda Alba’nın Evi", author: "Federico García Lorca" },
-    { title: "Batı Dünyasının Bekârı", author: "John Millington Synge" },
-    { title: "Dar Sokaklarda Gece", author: "Sean O'Casey" },
-    { title: "Lady Windermere’in Yelpazesi", author: "Oscar Wilde" },
-    { title: "Ideal Koca", author: "Oscar Wilde" },
-    { title: "Bekçi", author: "Harold Pinter" },
-    { title: "Sessiz Servis", author: "Harold Pinter" },
-    { title: "İhanet", author: "Harold Pinter" },
-    { title: "Hizmetçiler", author: "Jean Genet" },
-    { title: "Ölüm Nöbeti", author: "Jean Genet" },
-    { title: "Uzun Günün Akşamı", author: "Eugene O'Neill" },
-    { title: "Buz Adam Geliyor", author: "Eugene O'Neill" },
-    { title: "Mae Rainey’nin Siyah Dipleri", author: "August Wilson" },
-    { title: "Çitler", author: "August Wilson" },
-    { title: "Amerikan Buffalosu", author: "David Mamet" },
-    { title: "Altı Karakter Aranıyor", author: "Luigi Pirandello" },
-    { title: "Pierrot Uyanıyor", author: "Luigi Pirandello" },
-    { title: "Ayaklı Tabut", author: "Luigi Pirandello" },
-    { title: "Andromak", author: "Jean Racine" },
-    { title: "Fedra", author: "Jean Racine" },
-    { title: "Doktor Faustus", author: "Christopher Marlowe" },
-    { title: "Keşanlı Ali Destanı", author: "Haldun Taner" },
-    { title: "Ferhat ile Şirin", author: "Nazım Hikmet" },
-    { title: "Maskaralık", author: "Haldun Taner" },
-    { title: "İstanbul Efendisi", author: "Musahipzade Celal" },
-    { title: "Vurma Zurna Çal Zurna", author: "Güngör Dilmen" },
-    { title: "Benerci Kendini Niçin Öldürdü?", author: "Güngör Dilmen" },
-    { title: "Aşk Bağlanmaz ki", author: "Orhan Asena" },
-    { title: "Chicago", author: "Fred Ebb & Bob Fosse" },
-    { title: "West Side Story", author: "Arthur Laurents" },
-    { title: "Rent", author: "Jonathan Larson" },
-    { title: "Hamilton", author: "Lin-Manuel Miranda" },
-    { title: "The Phantom of the Opera", author: "Andrew Lloyd Webber" },
-    { title: "Cats", author: "Andrew Lloyd Webber" },
-    { title: "4.48 Psikoz", author: "Sarah Kane" },
-    { title: "Lughnasa’da Dans", author: "Brian Friel" },
-    { title: "Sanat", author: "Yasmina Reza" },
-    { title: "Süt Tahtı Altında", author: "Dylan Thomas" },
-    { title: "Doğum Günü Partisi", author: "Harold Pinter" },
-    { title: "Elektra", author: "Euripides" },
-    { title: "Anne Frank’in Hatıra Defteri", author: "Frances Goodrich & Albert Hackett" }
-  ];
-</script>
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tiyatro Yazarı Tahmin Oyunu</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    #game {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    #title {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    input[type="text"] {
+      width: calc(100% - 1rem);
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+    }
+    button {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0 0.5rem;
+    }
+    #checkBtn { background: #28a745; color: #fff; }
+    #nextBtn { background: #007bff; color: #fff; display: none; }
+    #result {
+      margin-top: 1rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div id="game">
+    <h2>Tiyatro Yazarı Tahmin Oyunu</h2>
+    <div id="title">...</div>
+    <input type="text" id="guess" placeholder="Yazarın ismini yazın" autocomplete="off" />
+    <div>
+      <button id="checkBtn">Tahmin Et</button>
+      <button id="nextBtn">Sonraki</button>
+    </div>
+    <div id="result"></div>
+  </div>
+
+  <script>
+    const plays = [
+      { title: "Hamlet", author: "William Shakespeare" },
+      { title: "Kral Lear", author: "William Shakespeare" },
+      { title: "Macbeth", author: "William Shakespeare" },
+      { title: "Romeo ve Juliet", author: "William Shakespeare" },
+      { title: "Bir Yaz Gecesi Rüyası", author: "William Shakespeare" },
+      { title: "Fırtına", author: "William Shakespeare" },
+      { title: "Othello", author: "William Shakespeare" },
+      { title: "Antonius ve Kleopatra", author: "William Shakespeare" },
+      { title: "Jül Sezar", author: "William Shakespeare" },
+      { title: "Titus Andronikus", author: "William Shakespeare" },
+      { title: "Antigone", author: "Sofokles" },
+      { title: "Oidipus Rex", author: "Sofokles" },
+      { title: "Oidipus Kolonistleri", author: "Sofokles" },
+      { title: "Filoktetes", author: "Sofokles" },
+      { title: "Trakhinliler", author: "Sofokles" },
+      { title: "Medea", author: "Euripides" },
+      { title: "İfigenya Aulis’te", author: "Euripides" },
+      { title: "Bakhalar", author: "Euripides" },
+      { title: "Helena", author: "Euripides" },
+      { title: "Agamemnon", author: "Aiskhylos" },
+      { title: "Prometheus Bağlı", author: "Aiskhylos" },
+      { title: "Eumenideler", author: "Aiskhylos" },
+      { title: "Kuşlar", author: "Aristophanes" },
+      { title: "Kurbağalar", author: "Aristophanes" },
+      { title: "Bulutlar", author: "Aristophanes" },
+      { title: "Cimri", author: "Molière" },
+      { title: "Hastalık Hastası", author: "Molière" },
+      { title: "Tartuffe", author: "Molière" },
+      { title: "Ciddiyetin Önemi", author: "Oscar Wilde" },
+      { title: "Vanya Dayı", author: "Anton Çehov" },
+      { title: "Vişne Bahçesi", author: "Anton Çehov" },
+      { title: "Martı", author: "Anton Çehov" },
+      { title: "Üç Kız Kardeş", author: "Anton Çehov" },
+      { title: "Bir Bebek Evi", author: "Henrik Ibsen" },
+      { title: "Hedda Gabler", author: "Henrik Ibsen" },
+      { title: "Peer Gynt", author: "Henrik Ibsen" },
+      { title: "Baba", author: "August Strindberg" },
+      { title: "Lady Ivona", author: "August Strindberg" },
+      { title: "Kafkas Tebeşir Dairesi", author: "Bertolt Brecht" },
+      { title: "Üç Kuruşluk Opera", author: "Bertolt Brecht" },
+      { title: "Galileo", author: "Bertolt Brecht" },
+      { title: "Godot’u Beklerken", author: "Samuel Beckett" },
+      { title: "Oyun", author: "Samuel Beckett" },
+      { title: "Krapp’ın Son Bandı", author: "Samuel Beckett" },
+      { title: "Kirli Eller", author: "Jean-Paul Sartre" },
+      { title: "Duvar", author: "Jean-Paul Sartre" },
+      { title: "Adalet Yolcuları", author: "Albert Camus" },
+      { title: "Caligula", author: "Albert Camus" },
+      { title: "Ziyaret", author: "Friedrich Dürrenmatt" },
+      { title: "Fizikçiler", author: "Friedrich Dürrenmatt" },
+      { title: "Satıcının Ölümü", author: "Arthur Miller" },
+      { title: "Cadı Kazanı", author: "Arthur Miller" },
+      { title: "Arzu Tramvayı", author: "Tennessee Williams" },
+      { title: "Cam Kenarı Kadınları", author: "Tennessee Williams" },
+      { title: "Güneşte Bir Üzüm", author: "Lorraine Hansberry" },
+      { title: "Döngü", author: "Arthur Schnitzler" },
+      { title: "Cyrano de Bergerac", author: "Edmond Rostand" },
+      { title: "Şarkıcı Horoz", author: "Edmond Rostand" },
+      { title: "Kanlı Düğün", author: "Federico García Lorca" },
+      { title: "Bernarda Alba’nın Evi", author: "Federico García Lorca" },
+      { title: "Batı Dünyasının Bekârı", author: "John Millington Synge" },
+      { title: "Dar Sokaklarda Gece", author: "Sean O'Casey" },
+      { title: "Lady Windermere’in Yelpazesi", author: "Oscar Wilde" },
+      { title: "Ideal Koca", author: "Oscar Wilde" },
+      { title: "Bekçi", author: "Harold Pinter" },
+      { title: "Sessiz Servis", author: "Harold Pinter" },
+      { title: "İhanet", author: "Harold Pinter" },
+      { title: "Hizmetçiler", author: "Jean Genet" },
+      { title: "Ölüm Nöbeti", author: "Jean Genet" },
+      { title: "Uzun Günün Akşamı", author: "Eugene O'Neill" },
+      { title: "Buz Adam Geliyor", author: "Eugene O'Neill" },
+      { title: "Mae Rainey’nin Siyah Dipleri", author: "August Wilson" },
+      { title: "Çitler", author: "August Wilson" },
+      { title: "Amerikan Buffalosu", author: "David Mamet" },
+      { title: "Altı Karakter Aranıyor", author: "Luigi Pirandello" },
+      { title: "Pierrot Uyanıyor", author: "Luigi Pirandello" },
+      { title: "Ayaklı Tabut", author: "Luigi Pirandello" },
+      { title: "Andromak", author: "Jean Racine" },
+      { title: "Fedra", author: "Jean Racine" },
+      { title: "Doktor Faustus", author: "Christopher Marlowe" },
+      { title: "Keşanlı Ali Destanı", author: "Haldun Taner" },
+      { title: "Ferhat ile Şirin", author: "Nazım Hikmet" },
+      { title: "Maskaralık", author: "Haldun Taner" },
+      { title: "İstanbul Efendisi", author: "Musahipzade Celal" },
+      { title: "Vurma Zurna Çal Zurna", author: "Güngör Dilmen" },
+      { title: "Benerci Kendini Niçin Öldürdü?", author: "Güngör Dilmen" },
+      { title: "Aşk Bağlanmaz ki", author: "Orhan Asena" },
+      { title: "Chicago", author: "Fred Ebb & Bob Fosse" },
+      { title: "West Side Story", author: "Arthur Laurents" },
+      { title: "Rent", author: "Jonathan Larson" },
+      { title: "Hamilton", author: "Lin-Manuel Miranda" },
+      { title: "The Phantom of the Opera", author: "Andrew Lloyd Webber" },
+      { title: "Cats", author: "Andrew Lloyd Webber" },
+      { title: "4.48 Psikoz", author: "Sarah Kane" },
+      { title: "Lughnasa’da Dans", author: "Brian Friel" },
+      { title: "Sanat", author: "Yasmina Reza" },
+      { title: "Süt Tahtı Altında", author: "Dylan Thomas" },
+      { title: "Doğum Günü Partisi", author: "Harold Pinter" },
+      { title: "Elektra", author: "Euripides" },
+      { title: "Anne Frank’in Hatıra Defteri", author: "Frances Goodrich & Albert Hackett" }
+    ];
+
+    let current;
+    function pickRandom() {
+      current = plays[Math.floor(Math.random() * plays.length)];
+      document.getElementById("title").textContent = current.title;
+      document.getElementById("guess").value = "";
+      document.getElementById("result").textContent = "";
+      document.getElementById("nextBtn").style.display = "none";
+      document.getElementById("checkBtn").style.display = "inline-block";
+    }
+
+    document.getElementById("checkBtn").addEventListener("click", () => {
+      const input = document.getElementById("guess").value.trim().toLowerCase();
+      const correct = current.author.toLowerCase();
+      const resultEl = document.getElementById("result");
+
+      if (!input) {
+        resultEl.textContent = "Lütfen bir tahmin girin.";
+        return;
+      }
+      if (input === correct) {
+        resultEl.textContent = "🎉 Doğru! Yazar: " + current.author;
+      } else {
+        resultEl.textContent = "❌ Yanlış. Doğru cevap: " + current.author;
+      }
+      document.getElementById("checkBtn").style.display = "none";
+      document.getElementById("nextBtn").style.display = "inline-block";
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", pickRandom);
+
+    // Oyunu başlat
+    pickRandom();
+  </script>
+</body>
+</html>
+
 
